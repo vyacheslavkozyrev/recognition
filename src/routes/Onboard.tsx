@@ -31,15 +31,18 @@ class Onboard extends Component<OnboardProps, OnboardState> {
   sendImage = async (event: FormEvent) => {
     event.preventDefault();
 
-    const response = await axios.post('https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create', {
-      username: this.state.name,
-      pin: this.state.pin,
-      user_avatar: this.state.image
+    const { name, pin, image } = this.state;
+
+    const response: any = await axios.post('https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create', {
+      username: name,
+      pin: pin,
+      user_avatar: image
     });
 
-    console.log(response)
-    if (response.success) {
+    console.log(response, typeof response.status, response.status === 200)
+    if (response.status === 200) { // success
       this.setState({
+        ...this.state,
         success: true
       })
     }
@@ -67,6 +70,10 @@ class Onboard extends Component<OnboardProps, OnboardState> {
   }
 
   render() {
+    const successMessage: JSX.Element | null = this.state.success ? (
+      <p>You successfully onboarded!!!</p>
+    ) : null;
+
     return (
       <div className="Onboard">
         <div className="content">
@@ -74,21 +81,22 @@ class Onboard extends Component<OnboardProps, OnboardState> {
             <Camera onTakePhoto={this.storeImage} />
             <div className="rightPanel">
               <h1>Create Profile</h1>
-            <form onSubmit={this.sendImage} className="onboardForm">
-              <div className="formGroup">
-                <span>User Name: </span>
-                <input id='name' type="text" value={this.state.name} onChange={this.updateName} />
-              </div>
-              <div className="formGroup">
-                <span>PIN: </span>
-                <input id='pin' type="text" value={this.state.pin} onChange={this.updatePin} />
-              </div>
-              <button type="submit">
-                Submit Profile
+              {successMessage}
+              <form onSubmit={this.sendImage} className="onboardForm">
+                <div className="formGroup">
+                  <span>User Name: </span>
+                  <input id='name' type="text" value={this.state.name} onChange={this.updateName} />
+                </div>
+                <div className="formGroup">
+                  <span>PIN: </span>
+                  <input id='pin' type="text" value={this.state.pin} onChange={this.updatePin} />
+                </div>
+                <button type="submit">
+                  Submit Profile
               </button>
-            </form>
+              </form>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     );
