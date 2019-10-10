@@ -26,14 +26,12 @@ class Login extends Component<LoginProps, LoginState> {
   }
   sendImage = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(this.state)
     const response = await axios.post('https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/identify', {
       pin: this.state.pin,
       user_avatar: this.state.image
     });
 
     const parsedBody = JSON.parse(JSON.parse(response.data.body));
-    console.log(response, parsedBody)
     if (parsedBody.Name) {
       this.setState({
         success: true,

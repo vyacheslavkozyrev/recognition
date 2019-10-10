@@ -39,7 +39,6 @@ class Onboard extends Component<OnboardProps, OnboardState> {
       user_avatar: image
     });
 
-    console.log(response, typeof response.status, response.status === 200)
     if (response.status === 200) { // success
       this.setState({
         ...this.state,
