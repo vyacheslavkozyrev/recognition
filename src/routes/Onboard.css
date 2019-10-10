@@ -40,3 +40,8 @@
 .userImage {
   margin-right: 2em;
 }
+
+.onboardForm {
+  display: flex;
+  flex-direction: column;
+}

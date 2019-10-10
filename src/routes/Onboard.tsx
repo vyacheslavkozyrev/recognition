@@ -2,6 +2,7 @@ import React, { Component, FormEvent } from 'react';
 import logo from '../logo.svg';
 import './Onboard.css';
 import { Camera } from '../components/Camera';
+import { Redirect } from 'react-router';
 const axios = require('axios').default;
 
 type OnboardProps = {
@@ -26,23 +27,36 @@ class Onboard extends Component<OnboardProps, OnboardState> {
   }
   sendImage = async (event: FormEvent) => {
     event.preventDefault(); 
-    console.log('sending image...')
-    const response = axios({
-      url: 'https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create',
-      method: 'POST',
-      data: {
-        username: this.state.name,
-        pin: this.state.pin,
-        user_avatar: this.state.image
-      }});
+    const response = await axios.post('https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create', {
+      username: this.state.name,
+      pin: this.state.pin,
+      user_avatar: this.state.image
+    });
+
     console.log(response)
+    if (response.success) {
+      this.setState({
+        success: true
+      })
+    }
   }
 
   storeImage = (image: string) => {
-    console.log('storing image...', image)
     this.setState({
       image
     });
+  }
+
+  updateName = (event: any) => {
+    this.setState({
+      name: this.state.name + event.nativeEvent.data
+    })
+  }
+
+  updatePin = (event: any) => {
+    this.setState({
+      pin: this.state.pin + event.nativeEvent.data
+    })
   }
 
   render() {
@@ -53,11 +67,10 @@ class Onboard extends Component<OnboardProps, OnboardState> {
         </header>
         <div className="content">
           <div className="userHeader">
-            {!this.state.image ?
-              <Camera onTakePhoto={this.storeImage} /> :
-              <img src={this.state.image ? this.state.image : logo} className="Onboard-logo" alt="Profile picture" />
-            }
-            <form onSubmit={this.sendImage}>
+            <Camera onTakePhoto={this.storeImage} />
+            <form onSubmit={this.sendImage} className="onboardForm">
+              <input type="text" value={this.state.name} onChange={this.updateName} />
+              <input type="text" value={this.state.pin} onChange={this.updatePin} />
               <button type="submit">
                 Submit Profile
               </button>
