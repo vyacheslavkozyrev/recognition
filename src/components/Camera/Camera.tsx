@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 
 type CameraProps = {
+    onTakePicture?: Function
 };
 
 class Camera extends Component<CameraProps> {
-    constraints: Object = {
+    private constraints: Object = {
         video: {
             height: { exact: 480 },
             width: { exact: 640 }
         }
     };
-
     private video: React.RefObject<HTMLVideoElement>;
+    private canvas: HTMLCanvasElement | null;
+
 
     constructor(props: CameraProps) {
         super(props);
 
         this.video = React.createRef();
+        this.canvas = null;
     }
 
     hasGetUserMedia(): boolean {
@@ -27,7 +30,28 @@ class Camera extends Component<CameraProps> {
         this.video = element;
     }
 
+    handleTakePicture(): void {
+        const { canvas, video, props } = this;
+        const { onTakePicture } = props;
+        const videoElement = video.current;
+
+        if (onTakePicture && canvas && videoElement) {
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+
+            const context = canvas.getContext('2d');
+
+            if (context) {
+                context.drawImage(videoElement, 0, 0);
+
+                onTakePicture(canvas.toDataURL('image/webp'));
+            }
+        }
+    }
+
     componentDidMount(): void {
+        this.canvas = document.createElement('canvas');
+
         navigator.mediaDevices.getUserMedia(this.constraints).
             then(stream => {
                 if (this.video.current) {
@@ -35,8 +59,6 @@ class Camera extends Component<CameraProps> {
                     this.video.current.srcObject = stream;
                 }
             });
-
-        console.log(this.video);
     }
 
     render(): JSX.Element {
@@ -44,11 +66,18 @@ class Camera extends Component<CameraProps> {
 
         if (this.hasGetUserMedia()) {
             element = (
-                <video
-                    ref={this.video}
-                    height="300"
-                    width="300"
-                />
+                <div>
+                    <video
+                        ref={this.video}
+                        height="300"
+                        width="300"
+                    />
+                    <button
+                        onClick={this.handleTakePicture.bind(this)}
+                    >
+                        Take Picture
+                    </button>
+                </div>
             );
         }
         else {
