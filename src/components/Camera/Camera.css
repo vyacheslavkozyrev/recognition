@@ -1,0 +1,30 @@
+.camera-container {
+    margin: 20px;
+    text-align: center;
+    width: 400px;
+}
+
+.camera-video-container {
+    height: 360px;
+    width: 360px;
+}
+
+.camera-image-container {
+    height: 360px;
+    width: 360px;
+    padding: 20px 0 0 20px;
+}
+
+.camera-image-container IMG {
+    height: 270px;
+    width: 360px;
+}
+
+.camera-button {
+    background-color: #7FC547;
+    border: 0;
+    height: 40px;
+    width: 360px;
+    color: #fff;
+    font-weight: bold;
+}
