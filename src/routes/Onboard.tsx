@@ -66,12 +66,11 @@ class Onboard extends Component<OnboardProps, OnboardState> {
   render() {
     return (
       <div className="Onboard">
-        <header className="Onboard-header">
-          <h1>Create Profile</h1>
-        </header>
         <div className="content">
           <div className="userHeader">
             <Camera onTakePhoto={this.storeImage} />
+            <div className="rightPanel">
+              <h1>Create Profile</h1>
             <form onSubmit={this.sendImage} className="onboardForm">
               <div className="formGroup">
                 <span>User Name: </span>
@@ -86,6 +85,7 @@ class Onboard extends Component<OnboardProps, OnboardState> {
               </button>
             </form>
           </div>
+        </div>
         </div>
       </div>
     );
