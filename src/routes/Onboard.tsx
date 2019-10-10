@@ -6,7 +6,6 @@ const Onboard: React.FC = () => {
   return (
     <div className="Onboard">
       <header className="Onboard-header">
-        <img src={logo} className="Onboard-logo" alt="logo" />
         <p>
           Edit <code>src/Onboard.tsx</code> and save to reload.
         </p>
@@ -19,6 +18,12 @@ const Onboard: React.FC = () => {
           Learn React
         </a>
       </header>
+      <div className="content">
+        <div className="userHeader">
+          <img src={logo} className="Onboard-logo userImage" alt="logo" />
+          <h2>Vyacheslav Kozyrev</h2>
+        </div>
+      </div>
     </div>
   );
 }

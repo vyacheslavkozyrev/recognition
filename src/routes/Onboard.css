@@ -1,22 +1,40 @@
-.App {
+.Onboard {
   text-align: center;
+  background-color: #dddddd;
+  height: 100vh;
 }
 
-.App-logo {
+.Onboard-logo {
   height: 40vmin;
 }
 
-.App-header {
+.Onboard-header {
   background-color: #282c34;
-  min-height: 100vh;
+  height: 5em;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
-.App-link {
+.Onboard-link {
   color: #09d3ac;
+}
+
+.content {
+  max-width: 1000px;
+  margin: auto;
+  background-color: #ffffff;
+  height: 100%;
+}
+
+.userHeader {
+  display: flex;
+  align-items: center;
+}
+
+.userImage {
+  margin-right: 2em;
 }
