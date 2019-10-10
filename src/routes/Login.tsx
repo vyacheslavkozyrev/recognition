@@ -5,7 +5,7 @@ import { Camera } from '../components/Camera';
 
 const Login: React.FC = () => {
   return (
-    <Camera />
+    <Camera onTakePhoto={()=>{}}/>
   );
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 type CameraProps = {
-    onTakePicture?: Function
+    onTakePhoto?: Function
 };
 
 class Camera extends Component<CameraProps> {
@@ -32,10 +32,10 @@ class Camera extends Component<CameraProps> {
 
     handleTakePicture(): void {
         const { canvas, video, props } = this;
-        const { onTakePicture } = props;
+        const { onTakePhoto } = props;
         const videoElement = video.current;
 
-        if (onTakePicture && canvas && videoElement) {
+        if (onTakePhoto && canvas && videoElement) {
             canvas.width = videoElement.videoWidth;
             canvas.height = videoElement.videoHeight;
 
@@ -44,7 +44,7 @@ class Camera extends Component<CameraProps> {
             if (context) {
                 context.drawImage(videoElement, 0, 0);
 
-                onTakePicture(canvas.toDataURL('image/webp'));
+                onTakePhoto(canvas.toDataURL('image/webp'));
             }
         }
     }
