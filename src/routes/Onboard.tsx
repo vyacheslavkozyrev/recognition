@@ -8,9 +8,9 @@ type OnboardProps = {
 };
 
 type OnboardState = {
-  name: String,
+  name: string,
   pin: Number | null,
-  image: String,
+  image: string,
   success: Boolean
 };
 
@@ -29,8 +29,11 @@ class Onboard extends Component<OnboardProps, OnboardState> {
     const response = await axios.post('https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create',{name: 'jimmy', pin: 1234, image: this.state.image});
   }
 
-  storeImage = () => {
+  storeImage = (event: Event, image: string) => {
     console.log('storing image...')
+    this.setState({
+      image
+    });
   }
 
   render() {
@@ -41,14 +44,13 @@ class Onboard extends Component<OnboardProps, OnboardState> {
         </header>
         <div className="content">
           <div className="userHeader">
-            <img src={'data:image/jpg;base64, '+jimmyImage} className="Onboard-logo userImage" alt="logo" />
-            <h2>Vyacheslav Kozyrev</h2>
-          </div>
-          <div className="cameraInteractions">
+            {!this.state.image ?
+              <Camera onTakePhoto={this.storeImage} /> :
+              <img src={this.state.image ? this.state.image : logo} className="Onboard-logo" alt="Profile picture" />
+            }
             <form onSubmit={this.sendImage}>
-              <Camera onTakePhoto={this.storeImage} />
               <button type="submit">
-                Submit Picture
+                Submit Profile
               </button>
             </form>
           </div>
