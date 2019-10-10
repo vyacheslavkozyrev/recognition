@@ -3,20 +3,19 @@ import logo from '../logo.svg';
 import './Onboard.css';
 
 const Onboard: React.FC = () => {
+  const sendImage = () => {
+    console.log('sending image...')
+  }
+
   return (
     <div className="Onboard">
       <header className="Onboard-header">
         <p>
           Edit <code>src/Onboard.tsx</code> and save to reload.
         </p>
-        <a
-          className="Onboard-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <button onClick={sendImage}>
           Learn React
-        </a>
+        </button>
       </header>
       <div className="content">
         <div className="userHeader">
