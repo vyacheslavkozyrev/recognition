@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import './Camera.css';
+
 type CameraState = {
     photo: string | undefined,
     lblTakePicture: string
@@ -52,14 +54,15 @@ class Camera extends Component<CameraProps, CameraState> {
 
             if (context) {
                 context.drawImage(videoElement, 0, 0);
+                context.canvas.toBlob(() => {
+                    this.setState({
+                        ...state,
+                        photo: canvas.toDataURL('image/jpeg'),
+                        lblTakePicture: 'Retake picture'
+                    });
 
-                this.setState({
-                    ...state,
-                    photo: canvas.toDataURL('image/jpeg'),
-                    lblTakePicture: 'Retake picture'
+                    onTakePhoto(this.state.photo);
                 });
-
-                onTakePhoto(this.state.photo);
             }
         }
     }
@@ -84,23 +87,23 @@ class Camera extends Component<CameraProps, CameraState> {
 
         if (photo) {
             image = (
-                <img
-                    height="300"
-                    width="300"
-                    src={photo}
-                />
+                <div className="camera-image-container">
+                    <img
+                        src={photo}
+                    />
+                </div>
             );
         }
 
         if (this.hasGetUserMedia()) {
             element = (
-                <div>
+                <div className="camera-container">
                     <video
                         ref={this.video}
-                        height="300"
-                        width="300"
+                        className="camera-video-container"
                     />
                     <button
+                        className="camera-button"
                         onClick={this.handleTakePicture.bind(this)}
                     >
                         {lblTakePicture}
