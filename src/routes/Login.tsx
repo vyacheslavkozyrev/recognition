@@ -62,7 +62,7 @@ class Login extends Component<LoginProps, LoginState> {
           <div className="userHeader">
             <Camera onTakePhoto={this.storeImage} />
             <div className="rightPanel">
-              <h1>Verify your identity</h1>
+              <h1>Authentication</h1>
               <form onSubmit={this.sendImage} className="LoginForm">
                 <div className="formGroup">
                   <span>PIN: </span>

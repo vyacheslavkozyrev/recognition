@@ -79,7 +79,7 @@ class Onboard extends Component<OnboardProps, OnboardState> {
           <div className="userHeader">
             <Camera onTakePhoto={this.storeImage} />
             <div className="rightPanel">
-              <h1>Create Profile</h1>
+              <h1>Registration</h1>
               {successMessage}
               <form onSubmit={this.sendImage} className="onboardForm">
                 <div className="formGroup">
