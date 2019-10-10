@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route
-} from "@types/react-router-dom";
+} from "react-router-dom";
 import Login from "./routes/Login";
 import Onboard from "./routes/Onboard";
 
