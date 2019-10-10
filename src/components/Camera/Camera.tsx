@@ -4,8 +4,39 @@ type CameraProps = {
 };
 
 class Camera extends Component<CameraProps> {
+    constraints: Object = {
+        video: {
+            height: { exact: 480 },
+            width: { exact: 640 }
+        }
+    };
+
+    private video: React.RefObject<HTMLVideoElement>;
+
+    constructor(props: CameraProps) {
+        super(props);
+
+        this.video = React.createRef();
+    }
+
     hasGetUserMedia(): boolean {
         return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+    }
+
+    getVideoElement(element: React.RefObject<HTMLVideoElement>): void {
+        this.video = element;
+    }
+
+    componentDidMount(): void {
+        navigator.mediaDevices.getUserMedia(this.constraints).
+            then(stream => {
+                if (this.video.current) {
+                    this.video.current.autoplay = true;
+                    this.video.current.srcObject = stream;
+                }
+            });
+
+        console.log(this.video);
     }
 
     render(): JSX.Element {
@@ -13,7 +44,11 @@ class Camera extends Component<CameraProps> {
 
         if (this.hasGetUserMedia()) {
             element = (
-                <span>camera is supported 123</span>
+                <video
+                    ref={this.video}
+                    height="300"
+                    width="300"
+                />
             );
         }
         else {
