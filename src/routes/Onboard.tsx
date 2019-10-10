@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, FormEvent } from 'react';
 import logo from '../logo.svg';
 import './Onboard.css';
 import { Camera } from '../components/Camera';
@@ -24,14 +24,17 @@ class Onboard extends Component<OnboardProps, OnboardState> {
       success: false
     }
   }
-  sendImage = async () => {
+  sendImage = async (event: FormEvent) => {
+    event.preventDefault(); 
     console.log('sending image...')
-    const response = await axios.post(
-      'https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create', {
+    const response = axios({
+      url: 'https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create',
+      method: 'POST',
+      data: {
         username: this.state.name,
         pin: this.state.pin,
         user_avatar: this.state.image
-      });
+      }});
     console.log(response)
   }
 
