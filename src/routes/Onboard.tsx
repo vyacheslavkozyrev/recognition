@@ -57,14 +57,14 @@ class Onboard extends Component<OnboardProps, OnboardState> {
   updateName = (event: any) => {
     this.setState({
       ...this.state,
-      name: this.state.name + event.nativeEvent.data
+      name: event.target.value
     })
   }
 
   updatePin = (event: any) => {
     this.setState({
       ...this.state,
-      pin: this.state.pin + event.nativeEvent.data
+      pin: event.target.value
     })
   }
 

@@ -50,7 +50,7 @@ class Login extends Component<LoginProps, LoginState> {
   updatePin = (event: any) => {
     this.setState({
       ...this.state,
-      pin: this.state.pin + event.nativeEvent.data
+      pin: event.target.value
     })
   }
 
