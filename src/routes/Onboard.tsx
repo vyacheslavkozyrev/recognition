@@ -35,8 +35,8 @@ class Onboard extends Component<OnboardProps, OnboardState> {
     console.log(response)
   }
 
-  storeImage = (event: Event, image: string) => {
-    console.log('storing image...')
+  storeImage = (image: string) => {
+    console.log('storing image...', image)
     this.setState({
       image
     });
