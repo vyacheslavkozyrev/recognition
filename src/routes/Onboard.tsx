@@ -9,7 +9,7 @@ type OnboardProps = {
 
 type OnboardState = {
   name: string,
-  pin: Number | null,
+  pin: string,
   image: string,
   success: Boolean
 };
@@ -19,14 +19,20 @@ class Onboard extends Component<OnboardProps, OnboardState> {
     super(props);
     this.state = {
       name: '',
-      pin: null,
+      pin: '',
       image: '',
       success: false
     }
   }
   sendImage = async () => {
     console.log('sending image...')
-    const response = await axios.post('https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create',{name: 'jimmy', pin: 1234, image: this.state.image});
+    const response = await axios.post(
+      'https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create', {
+        username: this.state.name,
+        pin: this.state.pin,
+        user_avatar: this.state.image
+      });
+    console.log(response)
   }
 
   storeImage = (event: Event, image: string) => {
