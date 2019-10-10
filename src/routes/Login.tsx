@@ -10,7 +10,8 @@ type LoginProps = {
 type LoginState = {
   pin: string,
   image: string,
-  success: Boolean
+  success: Boolean,
+  name: string
 };
 
 class Login extends Component<LoginProps, LoginState> {
@@ -19,7 +20,8 @@ class Login extends Component<LoginProps, LoginState> {
     this.state = {
       pin: '',
       image: '',
-      success: false
+      success: false,
+      name: ''
     }
   }
   sendImage = async (event: FormEvent) => {
@@ -31,9 +33,10 @@ class Login extends Component<LoginProps, LoginState> {
     });
 
     console.log(response)
-    if (response.success) {
+    if (response.data.statusCode === 200) {
       this.setState({
-        success: true
+        success: true,
+        name: response.data.username
       })
     }
   }
