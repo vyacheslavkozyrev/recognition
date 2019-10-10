@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 
+type CameraState = {
+    photo: string | undefined,
+    lblTakePicture: string
+};
+
 type CameraProps = {
     onTakePhoto?: Function
 };
 
-class Camera extends Component<CameraProps> {
+class Camera extends Component<CameraProps, CameraState> {
     private constraints: Object = {
         video: {
             height: { exact: 480 },
@@ -14,9 +19,13 @@ class Camera extends Component<CameraProps> {
     private video: React.RefObject<HTMLVideoElement>;
     private canvas: HTMLCanvasElement | null;
 
-
     constructor(props: CameraProps) {
         super(props);
+
+        this.state = {
+            photo: undefined,
+            lblTakePicture: 'Take photo'
+        };
 
         this.video = React.createRef();
         this.canvas = null;
@@ -31,7 +40,7 @@ class Camera extends Component<CameraProps> {
     }
 
     handleTakePicture(): void {
-        const { canvas, video, props } = this;
+        const { canvas, video, props, state } = this;
         const { onTakePhoto } = props;
         const videoElement = video.current;
 
@@ -44,7 +53,13 @@ class Camera extends Component<CameraProps> {
             if (context) {
                 context.drawImage(videoElement, 0, 0);
 
-                onTakePhoto(canvas.toDataURL('image/webp'));
+                this.setState({
+                    ...state,
+                    photo: canvas.toDataURL('image/jpeg'),
+                    lblTakePicture: 'Retake picture'
+                });
+
+                onTakePhoto(this.state.photo);
             }
         }
     }
@@ -63,6 +78,19 @@ class Camera extends Component<CameraProps> {
 
     render(): JSX.Element {
         let element: JSX.Element;
+        let image: JSX.Element | null = null;
+
+        const { photo, lblTakePicture } = this.state;
+
+        if (photo) {
+            image = (
+                <img
+                    height="300"
+                    width="300"
+                    src={photo}
+                />
+            );
+        }
 
         if (this.hasGetUserMedia()) {
             element = (
@@ -75,8 +103,11 @@ class Camera extends Component<CameraProps> {
                     <button
                         onClick={this.handleTakePicture.bind(this)}
                     >
-                        Take Picture
+                        {lblTakePicture}
                     </button>
+
+                    {image}
+
                 </div>
             );
         }
