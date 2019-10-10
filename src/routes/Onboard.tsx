@@ -26,7 +26,8 @@ class Onboard extends Component<OnboardProps, OnboardState> {
     }
   }
   sendImage = async (event: FormEvent) => {
-    event.preventDefault(); 
+    event.preventDefault();
+    console.log(this.state)
     const response = await axios.post('https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create', {
       username: this.state.name,
       pin: this.state.pin,
@@ -43,18 +44,21 @@ class Onboard extends Component<OnboardProps, OnboardState> {
 
   storeImage = (image: string) => {
     this.setState({
-      image
+      ...this.state,
+      image: image
     });
   }
 
   updateName = (event: any) => {
     this.setState({
+      ...this.state,
       name: this.state.name + event.nativeEvent.data
     })
   }
 
   updatePin = (event: any) => {
     this.setState({
+      ...this.state,
       pin: this.state.pin + event.nativeEvent.data
     })
   }
@@ -69,8 +73,14 @@ class Onboard extends Component<OnboardProps, OnboardState> {
           <div className="userHeader">
             <Camera onTakePhoto={this.storeImage} />
             <form onSubmit={this.sendImage} className="onboardForm">
-              <input type="text" value={this.state.name} onChange={this.updateName} />
-              <input type="text" value={this.state.pin} onChange={this.updatePin} />
+              <div className="formGroup">
+                <span>User Name: </span>
+                <input id='name' type="text" value={this.state.name} onChange={this.updateName} />
+              </div>
+              <div className="formGroup">
+                <span>PIN: </span>
+                <input id='pin' type="text" value={this.state.pin} onChange={this.updatePin} />
+              </div>
               <button type="submit">
                 Submit Profile
               </button>

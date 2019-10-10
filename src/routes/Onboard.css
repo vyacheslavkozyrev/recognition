@@ -33,7 +33,7 @@
 .userHeader {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   padding: 1em;
 }
 
@@ -44,4 +44,15 @@
 .onboardForm {
   display: flex;
   flex-direction: column;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.formGroup > span {
+  margin-right: 1em;
 }
