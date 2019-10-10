@@ -63,7 +63,7 @@ class Login extends Component<LoginProps, LoginState> {
             <Camera onTakePhoto={this.storeImage} />
             <div className="rightPanel">
               <h1>Make a Payment</h1>
-              <form onSubmit={this.sendImage} className="LoginForm">
+              <form onSubmit={this.sendImage} className="loginForm">
                 <div className="formGroup">
                   <span>PIN: </span>
                   <input id='pin' type="text" value={this.state.pin} onChange={this.updatePin} />
