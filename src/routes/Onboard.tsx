@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, FormEvent } from 'react';
 import logo from '../logo.svg';
 import './Onboard.css';
 import { Camera } from '../components/Camera';
+import { Redirect } from 'react-router';
 const axios = require('axios').default;
 
 type OnboardProps = {
@@ -24,22 +25,42 @@ class Onboard extends Component<OnboardProps, OnboardState> {
       success: false
     }
   }
-  sendImage = async () => {
-    console.log('sending image...')
-    const response = await axios.post(
-      'https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create', {
-        username: this.state.name,
-        pin: this.state.pin,
-        user_avatar: this.state.image
-      });
+  sendImage = async (event: FormEvent) => {
+    event.preventDefault();
+    console.log(this.state)
+    const response = await axios.post('https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/create', {
+      username: this.state.name,
+      pin: this.state.pin,
+      user_avatar: this.state.image
+    });
+
     console.log(response)
+    if (response.success) {
+      this.setState({
+        success: true
+      })
+    }
   }
 
   storeImage = (image: string) => {
-    console.log('storing image...', image)
     this.setState({
-      image
+      ...this.state,
+      image: image
     });
+  }
+
+  updateName = (event: any) => {
+    this.setState({
+      ...this.state,
+      name: this.state.name + event.nativeEvent.data
+    })
+  }
+
+  updatePin = (event: any) => {
+    this.setState({
+      ...this.state,
+      pin: this.state.pin + event.nativeEvent.data
+    })
   }
 
   render() {
@@ -50,11 +71,16 @@ class Onboard extends Component<OnboardProps, OnboardState> {
         </header>
         <div className="content">
           <div className="userHeader">
-            {!this.state.image ?
-              <Camera onTakePhoto={this.storeImage} /> :
-              <img src={this.state.image ? this.state.image : logo} className="Onboard-logo" alt="Profile picture" />
-            }
-            <form onSubmit={this.sendImage}>
+            <Camera onTakePhoto={this.storeImage} />
+            <form onSubmit={this.sendImage} className="onboardForm">
+              <div className="formGroup">
+                <span>User Name: </span>
+                <input id='name' type="text" value={this.state.name} onChange={this.updateName} />
+              </div>
+              <div className="formGroup">
+                <span>PIN: </span>
+                <input id='pin' type="text" value={this.state.pin} onChange={this.updatePin} />
+              </div>
               <button type="submit">
                 Submit Profile
               </button>
