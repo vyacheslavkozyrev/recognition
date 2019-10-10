@@ -32,11 +32,12 @@ class Login extends Component<LoginProps, LoginState> {
       user_avatar: this.state.image
     });
 
-    console.log(response)
-    if (response.data.statusCode === 200) {
+    const parsedBody = JSON.parse(JSON.parse(response.data.body));
+    console.log(response, parsedBody)
+    if (parsedBody.Name) {
       this.setState({
         success: true,
-        name: response.data.username
+        name: parsedBody.Name
       })
     }
   }
@@ -59,6 +60,7 @@ class Login extends Component<LoginProps, LoginState> {
     return (
       <div className="Login">
         <div className="content">
+          {this.state.name && (<h2>Welcome, {this.state.name}!</h2>)}
           <div className="userHeader">
             <Camera onTakePhoto={this.storeImage} />
             <div className="rightPanel">
