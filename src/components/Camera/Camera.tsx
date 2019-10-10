@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 
 type CameraProps = {
+    onTakePhoto?: Function
 };
 
 class Camera extends Component<CameraProps> {
+    constructor(props: CameraProps) {
+        super(props)
+    }
     hasGetUserMedia(): boolean {
         return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
     }
