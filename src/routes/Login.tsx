@@ -1,6 +1,6 @@
 import React, { Component, FormEvent } from 'react';
 import logo from '../logo.svg';
-import './Login.css';
+//import './Login.css';
 import { Camera } from '../components/Camera';
 const axios = require('axios').default;
 
