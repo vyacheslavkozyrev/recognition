@@ -56,26 +56,28 @@ class Login extends Component<LoginProps, LoginState> {
 
   render() {
     return (
-      <div className="Login">
-        <div className="content">
-          {this.state.name && (<h2>Welcome, {this.state.name}!</h2>)}
-          <div className="userHeader">
-            <Camera onTakePhoto={this.storeImage} />
-            <div className="rightPanel">
-              <h1>Authentication</h1>
-              <form onSubmit={this.sendImage} className="LoginForm">
-                <div className="formGroup">
-                  <span>PIN: </span>
-                  <input id='pin' type="text" value={this.state.pin} onChange={this.updatePin} />
-                </div>
-                <button type="submit">
-                  Verify
-              </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+		<div className="narrow-container">
+			<div className="status-message-box status-message-error">Invalid PIN number.</div>
+			<h1 role="heading">Verify Your Identy</h1>
+			<div className="row">
+				<div className="col-sm-12">
+					<div className="temporary-class">
+						<Camera onTakePhoto={this.storeImage} />
+					</div>
+					<form onSubmit={this.sendImage} className="LoginForm">
+						<div className="form-row">
+							<label htmlFor="pin">Personal Identification Number (PIN)</label>
+							<input id="pin" type="text" value={this.state.pin} onChange={this.updatePin} />
+						</div>
+						<div className="form-row">
+							<div className="button-bar">
+								<button type="submit">Verify</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
     );
   }
 }
