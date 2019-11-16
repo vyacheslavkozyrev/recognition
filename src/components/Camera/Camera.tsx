@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import './Camera.css';
-
 type CameraState = {
     photo: string | undefined,
     lblTakePicture: string

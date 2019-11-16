@@ -2,7 +2,6 @@ import React, { Component, FormEvent } from 'react';
 
 import axios from 'axios';
 
-import './Onboard.css';
 import { Camera } from '../components/Camera';
 import { Redirect } from 'react-router';
 
@@ -70,34 +69,35 @@ class Onboard extends Component<OnboardProps, OnboardState> {
 
   render() {
     const successMessage: JSX.Element | null = this.state.success ? (
-      <p>You successfully onboarded!!!</p>
+      <p>You successfully onboarded.</p>
     ) : null;
 
     return (
-      <div className="Onboard">
-        <div className="content">
-          <div className="userHeader">
-            <Camera onTakePhoto={this.storeImage} />
-            <div className="rightPanel">
-              <h1>Registration</h1>
-              {successMessage}
-              <form onSubmit={this.sendImage} className="onboardForm">
-                <div className="formGroup">
-                  <span>User Name: </span>
-                  <input id='name' type="text" value={this.state.name} onChange={this.updateName} />
-                </div>
-                <div className="formGroup">
-                  <span>PIN: </span>
-                  <input id='pin' type="text" value={this.state.pin} onChange={this.updatePin} />
-                </div>
-                <button type="submit">
-                  Submit Profile
-              </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+			<div className="container">
+				<div className="status-message-box status-message-success">{successMessage}</div>
+				<h1 role="heading">Sign Up</h1>
+
+				<div className="row">
+					<div className="col-sm-5">
+						<Camera onTakePhoto={this.storeImage} />
+					</div>
+					<div className="col-sm-7">
+						<form onSubmit={this.sendImage} className="onboardForm">
+							<div className="form-row">
+								<label>Name</label>
+								<input id='name' type="text" value={this.state.name} onChange={this.updateName} />
+							</div>
+							<div className="form-row">
+								<label>Personal Identification Number (PIN)</label>
+								<input id='pin' type="text" value={this.state.pin} onChange={this.updatePin} />
+							</div>
+							<div className="button-bar">
+								<button type="submit">Sign Up</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
     );
   }
 }
