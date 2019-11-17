@@ -1,7 +1,6 @@
 import React, { Component, FormEvent } from 'react';
-import logo from '../logo.svg';
-//import './Login.css';
-import { Camera } from '../components/Camera';
+import './Login.css';
+import { Camera } from '../../components/Camera';
 const axios = require('axios').default;
 
 type LoginProps = {
@@ -56,28 +55,28 @@ class Login extends Component<LoginProps, LoginState> {
 
   render() {
     return (
-		<div className="narrow-container">
-			<div className="status-message-box status-message-error">Invalid PIN number.</div>
-			<h1 role="heading">Verify Your Identy</h1>
-			<div className="row">
-				<div className="col-sm-12">
-					<div className="temporary-class">
-						<Camera onTakePhoto={this.storeImage} />
-					</div>
-					<form onSubmit={this.sendImage} className="LoginForm">
-						<div className="form-row">
-							<label htmlFor="pin">Personal Identification Number (PIN)</label>
-							<input id="pin" type="text" value={this.state.pin} onChange={this.updatePin} />
-						</div>
-						<div className="form-row">
-							<div className="button-bar">
-								<button type="submit">Verify</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
+      <div className="narrow-container">
+        <div className="status-message-box status-message-error">Invalid PIN number.</div>
+        <h1 role="heading">Verify Your Identy</h1>
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="temporary-class">
+              <Camera onTakePhoto={this.storeImage} />
+            </div>
+            <form onSubmit={this.sendImage} className="LoginForm">
+              <div className="form-row">
+                <label htmlFor="pin">Personal Identification Number (PIN)</label>
+                <input id="pin" type="text" value={this.state.pin} onChange={this.updatePin} />
+              </div>
+              <div className="form-row">
+                <div className="button-bar">
+                  <button type="submit">Verify</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     );
   }
 }

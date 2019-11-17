@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 
+import './Camera.css';
+
+const videoHeight: number = 400;
+const videoWidth: number = 400;
+const lblTakePicture: string = 'Take Photo';
+const lblRetakePicture: string = 'Retake Photo';
+
 type CameraState = {
-    photo: string | undefined,
+    photo: string | null,
     lblTakePicture: string
 };
 
@@ -12,8 +19,8 @@ type CameraProps = {
 class Camera extends Component<CameraProps, CameraState> {
     private constraints: Object = {
         video: {
-            height: { exact: 480 },
-            width: { exact: 640 }
+            height: { exact: videoHeight },
+            width: { exact: videoWidth }
         }
     };
     private video: React.RefObject<HTMLVideoElement>;
@@ -23,46 +30,12 @@ class Camera extends Component<CameraProps, CameraState> {
         super(props);
 
         this.state = {
-            photo: undefined,
-            lblTakePicture: 'Take photo'
+            photo: null,
+            lblTakePicture: lblTakePicture
         };
 
         this.video = React.createRef();
         this.canvas = null;
-    }
-
-    hasGetUserMedia(): boolean {
-        return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-    }
-
-    getVideoElement(element: React.RefObject<HTMLVideoElement>): void {
-        this.video = element;
-    }
-
-    handleTakePicture(): void {
-        const { canvas, video, props, state } = this;
-        const { onTakePhoto } = props;
-        const videoElement = video.current;
-
-        if (onTakePhoto && canvas && videoElement) {
-            canvas.width = videoElement.videoWidth;
-            canvas.height = videoElement.videoHeight;
-
-            const context = canvas.getContext('2d');
-
-            if (context) {
-                context.drawImage(videoElement, 0, 0);
-                context.canvas.toBlob(() => {
-                    this.setState({
-                        ...state,
-                        photo: canvas.toDataURL('image/jpeg'),
-                        lblTakePicture: 'Retake picture'
-                    });
-
-                    onTakePhoto(this.state.photo);
-                });
-            }
-        }
     }
 
     componentDidMount(): void {
@@ -77,6 +50,54 @@ class Camera extends Component<CameraProps, CameraState> {
             });
     }
 
+    componentDidUpdate(): void {
+        navigator.mediaDevices.getUserMedia(this.constraints).
+            then(stream => {
+                if (this.video.current) {
+                    this.video.current.autoplay = true;
+                    this.video.current.srcObject = stream;
+                }
+            });
+    }
+
+    hasGetUserMedia(): boolean {
+        return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+    }
+
+    handleTakePicture(): void {
+        const { canvas, video, props, state } = this;
+        const { onTakePhoto } = props;
+        const { photo } = state;
+        const videoElement = video.current;
+
+        if (photo) {
+            this.setState({
+                ...state,
+                photo: null,
+                lblTakePicture: lblTakePicture
+            });
+        }
+        else if (onTakePhoto && canvas && videoElement) {
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+
+            const context = canvas.getContext('2d');
+
+            if (context) {
+                context.drawImage(videoElement, 0, 0);
+                context.canvas.toBlob(() => {
+                    this.setState({
+                        ...state,
+                        photo: canvas.toDataURL('image/jpeg'),
+                        lblTakePicture: lblRetakePicture
+                    });
+
+                    onTakePhoto(this.state.photo);
+                });
+            }
+        }
+    }
+
     render(): JSX.Element {
         let element: JSX.Element;
         let image: JSX.Element | null = null;
@@ -85,31 +106,38 @@ class Camera extends Component<CameraProps, CameraState> {
 
         if (photo) {
             image = (
-                <div className="camera-image-container">
+                <div className="camera-container">
                     <img
                         src={photo}
+                        className="camera-photo"
                     />
                 </div>
             );
         }
-
-        if (this.hasGetUserMedia()) {
-            element = (
+        else {
+            image = (
                 <div className="camera-container">
                     <video
                         ref={this.video}
                         className="camera-video-container"
                     />
+                </div>
+            );
+            console.log(image);
+        }
+
+        if (this.hasGetUserMedia()) {
+            element = (
+                <>
+                    {image}
+
                     <button
                         className="camera-button"
                         onClick={this.handleTakePicture.bind(this)}
                     >
                         {lblTakePicture}
                     </button>
-
-                    {image}
-
-                </div>
+                </>
             );
         }
         else {

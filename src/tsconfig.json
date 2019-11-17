@@ -1,8 +1,0 @@
-{
-    "compilerOptions": {
-        "alwaysStrict": true,
-        "declaration": true,
-        "declarationMap": true,
-        "module": "commonjs"
-    }
-}

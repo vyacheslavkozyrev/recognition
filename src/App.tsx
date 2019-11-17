@@ -1,9 +1,8 @@
 import React from 'react';
+import Router from './router';
 
 import './assets/resets.css';
-import './assets/bootstrap-3-grid.css';
 import './assets/app.css';
-import Router from './router';
 
 const App: React.FC = () => {
   return Router();
