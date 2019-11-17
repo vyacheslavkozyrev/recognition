@@ -1,0 +1,14 @@
+.container {
+  margin: 1em auto;
+  width: 900px;
+}
+
+.container-flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.container-form {
+  flex: 1;
+  margin-left: 2em;
+}

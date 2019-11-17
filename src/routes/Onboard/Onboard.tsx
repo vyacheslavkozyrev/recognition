@@ -1,7 +1,5 @@
 import React, { Component, FormEvent } from 'react';
-
 import axios from 'axios';
-
 import { Camera } from '../../components/Camera';
 
 import './Onboard.css';

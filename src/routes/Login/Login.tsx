@@ -1,7 +1,8 @@
 import React, { Component, FormEvent } from 'react';
-import './Login.css';
 import { Camera } from '../../components/Camera';
-const axios = require('axios').default;
+import axios from 'axios';
+
+import './Login.css';
 
 type LoginProps = {
 };
@@ -9,32 +10,42 @@ type LoginProps = {
 type LoginState = {
   pin: string,
   image: string,
-  success: Boolean,
+  success: boolean | null,
   name: string
 };
 
 class Login extends Component<LoginProps, LoginState> {
   constructor(props: LoginProps) {
     super(props);
+
     this.state = {
       pin: '',
       image: '',
-      success: false,
+      success: null,
       name: ''
     }
   }
+
   sendImage = async (event: FormEvent) => {
     event.preventDefault();
+
     const response = await axios.post('https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/identify', {
       pin: this.state.pin,
       user_avatar: this.state.image
     });
 
     const parsedBody = JSON.parse(JSON.parse(response.data.body));
+
     if (parsedBody.Name) {
       this.setState({
         success: true,
         name: parsedBody.Name
+      })
+    }
+    else {
+      this.setState({
+        success: false,
+        name: ''
       })
     }
   }
@@ -54,16 +65,42 @@ class Login extends Component<LoginProps, LoginState> {
   }
 
   render() {
+    const { success } = this.state;
+
+    let successMessage: JSX.Element | null = null;
+
+    if (success) {
+      successMessage = (
+        <div className="status-message-box status-message-success">
+          <p>You successfully recognized!</p>
+        </div>
+      );
+    }
+    else if (success === null) {
+      successMessage = null;
+    }
+    else {
+      successMessage = (
+        <div className="status-message-box status-message-error">
+          <p>Something went wrong! Please try again.</p>
+        </div>
+      );
+    }
+
     return (
-      <div className="narrow-container">
-        <div className="status-message-box status-message-error">Invalid PIN number.</div>
+      <div className="container">
+
+        {successMessage}
+
         <h1 role="heading">Verify Your Identy</h1>
-        <div className="row">
-          <div className="col-sm-12">
-            <div className="temporary-class">
-              <Camera onTakePhoto={this.storeImage} />
-            </div>
-            <form onSubmit={this.sendImage} className="LoginForm">
+
+        <div className="container-flex">
+          <div>
+            <Camera onTakePhoto={this.storeImage} />
+          </div>
+
+          <div className="container-form">
+            <form onSubmit={this.sendImage}>
               <div className="form-row">
                 <label htmlFor="pin">Personal Identification Number (PIN)</label>
                 <input id="pin" type="text" value={this.state.pin} onChange={this.updatePin} />
