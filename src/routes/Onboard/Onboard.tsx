@@ -3,7 +3,6 @@ import React, { Component, FormEvent } from 'react';
 import axios from 'axios';
 
 import { Camera } from '../../components/Camera';
-import { Redirect } from 'react-router';
 
 import './Onboard.css';
 
@@ -14,7 +13,7 @@ type OnboardState = {
   name: string,
   pin: string,
   image: string,
-  success: boolean
+  success: boolean | null
 };
 
 class Onboard extends Component<OnboardProps, OnboardState> {
@@ -25,7 +24,7 @@ class Onboard extends Component<OnboardProps, OnboardState> {
       name: '',
       pin: '',
       image: '',
-      success: false
+      success: null
     }
   }
 
@@ -44,6 +43,12 @@ class Onboard extends Component<OnboardProps, OnboardState> {
       this.setState({
         ...this.state,
         success: true
+      });
+    }
+    else {
+      this.setState({
+        ...this.state,
+        success: false
       })
     }
   }
@@ -70,29 +75,50 @@ class Onboard extends Component<OnboardProps, OnboardState> {
   }
 
   render() {
-    const successMessage: JSX.Element | null = this.state.success ? (
-      <p>You successfully onboarded.</p>
-    ) : null;
+    const { success } = this.state;
+
+    let successMessage: JSX.Element | null = null;
+
+    if (success) {
+      successMessage = (
+        <div className="status-message-box status-message-success">
+          <p>You successfully onboarded!</p>
+        </div>
+      );
+    }
+    else if (success === null) {
+      successMessage = null;
+    }
+    else {
+      successMessage = (
+        <div className="status-message-box status-message-error">
+          <p>Something went wrong! Please try again later.</p>
+        </div>
+      );
+    }
 
     return (
       <div className="container">
-        <div>{successMessage}</div>
+        {successMessage}
+
         <h1 role="heading">Make a Payment</h1>
-        <div>
+
+        <div className="container-flex">
           <div>
             <Camera onTakePhoto={this.storeImage} />
           </div>
-          <div>
+
+          <div className="container-form">
             <form onSubmit={this.sendImage}>
-              <div>
+              <fieldset className="form-row">
                 <label>Name</label>
                 <input id='name' type="text" value={this.state.name} onChange={this.updateName} />
-              </div>
-              <div>
+              </fieldset>
+              <fieldset className="form-row">
                 <label>Personal Identification Number (PIN)</label>
                 <input id='pin' type="text" value={this.state.pin} onChange={this.updatePin} />
-              </div>
-              <div>
+              </fieldset>
+              <div className="button-bar">
                 <button type="submit">Sign Up</button>
               </div>
             </form>

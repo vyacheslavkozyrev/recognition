@@ -18,12 +18,10 @@
     width: 100%;
 }
 
-.camera-button {
-    background-color: #7FC547;
-    border: 0;
-    color: #fff;
-    height: 40px;
-    font-weight: bold;
+.camera-button-container {
     margin-top: 1em;
-    width: 400px;
+}
+
+.camera-button-container button {
+    width: 100%;
 }

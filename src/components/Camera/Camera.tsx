@@ -123,7 +123,6 @@ class Camera extends Component<CameraProps, CameraState> {
                     />
                 </div>
             );
-            console.log(image);
         }
 
         if (this.hasGetUserMedia()) {
@@ -131,12 +130,11 @@ class Camera extends Component<CameraProps, CameraState> {
                 <>
                     {image}
 
-                    <button
-                        className="camera-button"
-                        onClick={this.handleTakePicture.bind(this)}
-                    >
-                        {lblTakePicture}
-                    </button>
+                    <div className="camera-button-container">
+                        <button onClick={this.handleTakePicture.bind(this)}>
+                            {lblTakePicture}
+                        </button>
+                    </div>
                 </>
             );
         }
