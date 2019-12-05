@@ -1,6 +1,7 @@
 import React, { Component, FormEvent } from 'react';
 import { Camera } from '../../components/Camera';
 import axios from 'axios';
+// import { API_KEY } from '../../secrets';
 
 import './Login.css';
 
@@ -29,10 +30,14 @@ class Login extends Component<LoginProps, LoginState> {
   sendImage = async (event: FormEvent) => {
     event.preventDefault();
 
-    const response = await axios.post('https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/identify', {
+    const response = await axios.post(`https://zcqs0q4nzg.execute-api.us-east-1.amazonaws.com/prod/identify`, {
       pin: this.state.pin,
       user_avatar: this.state.image
     });
+    // }, {
+    //   headers: {
+    //     'x-api-key': API_KEY || ''
+    //   }
 
     const parsedBody = JSON.parse(JSON.parse(response.data.body));
 
@@ -65,14 +70,14 @@ class Login extends Component<LoginProps, LoginState> {
   }
 
   render() {
-    const { success } = this.state;
+    const { success, name } = this.state;
 
     let successMessage: JSX.Element | null = null;
 
     if (success) {
       successMessage = (
         <div className="status-message-box status-message-success">
-          <p>You successfully recognized!</p>
+          <p>Welcome {name}! You successfully recognized!</p>
         </div>
       );
     }
